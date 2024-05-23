@@ -18,3 +18,53 @@ $(document).ready(function() {
         "info": true
     });
 });
+
+// crée une tache
+$(document).ready(function() {
+    $("#formOrder").on("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Validate form fields
+        var titre = $('#titre').val().trim();
+        var date_description = $('#date_description').val().trim();
+        var date_dechéance = $('#date_dechéance').val().trim();
+
+        if (titre === '' || date_description === '' || date_dechéance === '') {
+            // If any field is empty, display an error message
+        }
+    }
+)}
+);
+         
+
+// récupére les taches
+// getBills();
+// function getBills(){
+//     $.ajax({
+//         url: 'prossece.php',
+//         data: {action : 'fetch'},
+//         success: function (response){
+//           $('#orderTable').html(response);
+//           $('table').DataTable();
+//         }
+//     })
+// }
+
+$(document).ready(function() {
+    // Fetch tasks
+    getTasks();
+
+    function getTasks() {
+        $.ajax({
+            url: 'prossece.php',
+            method: 'POST',
+            data: {action: 'fetch'}, // Sending action parameter to indicate fetch action
+            success: function(response) {
+                $('#orderTable').html(response); // Populate the table with fetched tasks
+            },
+            error: function() {
+                $('#orderTable').html("<p>An error occurred while fetching tasks.</p>");
+            }
+        });
+    }
+});

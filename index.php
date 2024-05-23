@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.datatables.net/v/bs5/dt-2.0.7/datatables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <!-- font -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Gestion des taches</title>
@@ -33,6 +35,14 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
+
+        <li ><button> 
+          <a href="login.php"></a>
+        </button></li>
+
+        <li ><button> 
+          <a href="register.php"></a>
+        </button></li>
       </ul>
     </div>
   </div>
@@ -61,35 +71,11 @@
     </div>
     <div class="dropdown-divider border-warning"></div>
     <div class="row">
-      <div class="table-responsive" id="orderTable">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Tache</th>
-              <th scope="col">Nom_tache</th>
-              <th scope="col">Permissions</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php for($i = 0; $i < 100; $i++): ?>
-              <tr>
-                <th scope="row"><?= $i ?></th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Otto</td>
-                <td>
-                  <a href="#" class="text-info me-2 infoBtn" title="Voir dÃ©tails"><i class="fas fa-info-circle"></i></a>
-                  <a href="#" class="text-primary me-2 editBtn" title="Modifier"><i class="fas fa-edit"></i></a>
-                  <a href="#" class="text-danger me-2 deleteBtn" title="Supprimer"><i class="fas fa-trash-alt"></i></a>
-                </td>
-              </tr>
-            <?php endfor; ?>
-          </tbody>
-        </table>
-      </div>
+    <div class="table-responsive" id="orderTable">
+        <!-- Task list will be loaded here -->
+        <h3 class="text-success text-center">Loading tasks...</h3>
     </div>
+</div>
 </section>
 
 <!-- Modal -->
@@ -101,20 +87,46 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Modal body content here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary" name="crate">Ajouter <i class="fas fa-plus"></i></button>
-      </div>
+      
+      <form action="" method="POST" id="formOrder">
+    <div class="form-floating mb-3">
+        <input type="text" id="titre" name="titre" class="form-control" required>
+        <label for="titre">title_tache</label>
     </div>
-  </div>
+    <div class="form-floating mb-3">
+        <input type="date" id="date_description" name="date_description" class="form-control" required>
+        <label for="date_description">date_description</label>
+    </div>
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <input type="date" id="date_dechéance" name="date_dechéance" class="form-control" required>
+                <label for="date_dechéance">date_dechéance</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="submit" id="create" name="create" class="btn btn-primary">Ajouter <i class="fas fa-plus"></i></button>
+    </div>
+</form>
+<div id="response"></div>
+
+
+
+
+      
 </div>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybbyFZK5TUegIHbj4wy0npeu6B6dD1OcIGbCUf5nxcb3KT8aT" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGhai24ZgPpGxGM/h6fWDKZf3a8z5r9RjbXEVgq51CM3CqN7dR9eK6fQ/rK" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/bs5/dt-2.0.7/datatables.min.js"></script>
 <script src="prossece.js"></script>
+
 </body>
 </html>
+
+
+
