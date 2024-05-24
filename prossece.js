@@ -20,21 +20,24 @@ $(document).ready(function() {
 });
 
 // crée une tache
-$(document).ready(function() {
-    $("#formOrder").on("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
+$(document).ready(function(){
+    $("#formOrder").on("submit", function(event){
+        event.preventDefault();
+        
+        $.ajax({
+            url: "prossece.php",
+            type: "POST",
+            data: $(this).serialize(),
+            success: function(data){
+                $("#response").html(data);
+            },
+            error: function(xhr, status, error){
+                console.error("AJAX Error:", status, error);
+            }
+        });
+    });
+});
 
-        // Validate form fields
-        var titre = $('#titre').val().trim();
-        var date_description = $('#date_description').val().trim();
-        var date_dechéance = $('#date_dechéance').val().trim();
-
-        if (titre === '' || date_description === '' || date_dechéance === '') {
-            // If any field is empty, display an error message
-        }
-    }
-)}
-);
          
 
 // récupére les taches

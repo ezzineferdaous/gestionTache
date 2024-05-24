@@ -13,29 +13,26 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['titre']) && !empty($_POST['date_description']) && !empty($_POST['date_dechéance'])) {
-    // Get form data
-    $titre = $_POST['titre'];
-    $date_description = $_POST['date_description'];
-    $date_dechéance = $_POST['date_dechéance'];
+// Get form data
+$titre = isset($_POST['titre']) ? $_POST['titre'] : '';
+$date_description = isset($_POST['date_description']) ? $_POST['date_description'] : '';
+$date_dechéance = isset($_POST['date_dechéance']) ? $_POST['date_dechéance'] : '';
 
-    // Insert data into database
-    $sql = "INSERT INTO taches (titre, date_description, date_dechéance) VALUES ('$titre', '$date_description', '$date_dechéance')";
+// Insert data into database
+$sql = "INSERT INTO taches (titre, date_description, date_dechéance) VALUES ('$titre','$date_description' ,'$date_dechéance')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
 // Fetch tasks
 if (isset($_POST['action']) && $_POST['action'] == 'fetch') {
     $output = '';
-    // Ensure the connection is open
+    // Reopen the connection if it's closed
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        $conn = new mysqli($servername, $username, $password, $dbname);
     }
     $sql = "SELECT * FROM taches";
     $result = $conn->query($sql);
@@ -54,7 +51,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'fetch') {
         <tbody>';
         while ($row = $result->fetch_assoc()) {
             $output .= "
+           
             <tr>
+            
                 <th>{$row['id']}</th>
                 <th>{$row['titre']}</th>
                 <th>{$row['date_description']}</th>
@@ -66,6 +65,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'fetch') {
                 </td>
             </tr>";
         }
+
         $output .= "</tbody></table>";
         echo $output;
     } else {
