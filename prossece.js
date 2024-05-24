@@ -1,90 +1,87 @@
-$(document).ready(function() {
-    // Hide the modal by default
-    $('#createModel').modal('hide');
-
-    // Show the modal when the button is clicked
-    $('#showModalButton').click(function() {
-        $('#createModel').modal('show');
-    });
-
-    // Initialize DataTables on the table
-    $('#orderTable table').DataTable({
-        "columnDefs": [
-            // Your column definitions here
-        ],
-        "paging": true,
-        "searching": true,
-        "ordering": true,
-        "info": true
-    });
-});
-
-// crée une tache
-$(document).ready(function(){
-    $("#formOrder").on("submit", function(event){
-        event.preventDefault();
-        
-        $.ajax({
-            url: "prossece.php",
-            type: "POST",
-            data: $(this).serialize(),
-            success: function(data){
-                $("#response").html(data);
-                // Reload the page after successful insertion
-                location.reload();
-            },
-            error: function(xhr, status, error){
-                console.error("AJAX Error:", status, error);
-            }
-        });
-    });
-});
-
-
-
-         
-
-// récupére les taches
-// getBills();
-// function getBills(){
-//     $.ajax({
-//         url: 'prossece.php',
-//         data: {action : 'fetch'},
-//         success: function (response){
-//           $('#orderTable').html(response);
-//           $('table').DataTable();
-//         }
-//     })
-// }
-
-$(document).ready(function() {
+$(document).ready(function () {
     // Fetch tasks
-    getTasks();
+    fetchTasks();
 
-    function getTasks() {
+    function fetchTasks() {
         $.ajax({
-            url: 'prossece.php',
+            url: 'process.php',
             method: 'POST',
-            data: {action: 'fetch'}, // Sending action parameter to indicate fetch action
-            success: function(response) {
-                $('#orderTable').html(response); // Populate the table with fetched tasks
-            },
-            error: function() {
-                $('#orderTable').html("<p>An error occurred while fetching tasks.</p>");
+            data: { action: 'fetchAll' },
+            success: function (response) {
+                $('#orderTable').html(response);
+                $('#taskTable').DataTable();
             }
         });
     }
+
+    // Create task
+    $('#formOrder').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'process.php',
+            method: 'POST',
+            data: $(this).serialize() + '&create=true',
+            success: function (response) {
+                alert(response);
+                $('#createModel').modal('hide');
+                fetchTasks();
+            }
+        });
+    });
+
+    // Edit task
+    $(document).on('click', '.editBtn', function () {
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url: 'process.php',
+            method: 'POST',
+            data: { id: id, action: 'edit' },
+            success: function (response) {
+                var data = JSON.parse(response);
+                $('#edit_id').val(data.id);
+                $('#edit_titre').val(data.titre);
+                $('#edit_date_description').val(data.date_description);
+                $('#edit_date_dechéance').val(data.date_dechéance);
+                $('#edit_id_tache').val(data.id_tache);
+                $('#edit_description').val(data.description);
+                $('#edit_id_utilisateur').val(data.id_utilisateur);
+                $('#edit_id_categorie').val(data.id_categorie);
+                $('#edit_id_liste').val(data.id_liste);
+                $('#edit_statut').val(data.statut);
+                $('#edit_priorite').val(data.priorite);
+                $('#editModel').modal('show');
+            }
+        });
+    });
+
+    // Update task
+    $('#formEditOrder').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'process.php',
+            method: 'POST',
+            data: $(this).serialize() + '&update=true',
+            success: function (response) {
+                alert(response);
+                $('#editModel').modal('hide');
+                fetchTasks();
+            }
+        });
+    });
+
+    // Delete task
+    $(document).on('click', '.deleteBtn', function () {
+        if (confirm('Are you sure you want to delete this task?')) {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: 'process.php',
+                method: 'POST',
+                data: { id: id, action: 'delete' },
+                success: function (response) {
+                    alert(response);
+                    fetchTasks();
+                }
+            });
+        }
+    });
 });
-
-// refrech page
-
-// $(document).ready(function(){
-//     // Function to refresh the page
-//     function refreshPage() {
-//         location.reload(); // Reload the current page
-//     }
-
-//     // Set interval to refresh every 5 seconds (5000 milliseconds)
-//     setInterval(refreshPage, 5000); // Adjust the interval time as needed (in milliseconds)
-// });
-
