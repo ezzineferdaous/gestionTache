@@ -30,6 +30,8 @@ $(document).ready(function(){
             data: $(this).serialize(),
             success: function(data){
                 $("#response").html(data);
+                // Reload the page after successful insertion
+                location.reload();
             },
             error: function(xhr, status, error){
                 console.error("AJAX Error:", status, error);
@@ -37,6 +39,8 @@ $(document).ready(function(){
         });
     });
 });
+
+
 
          
 
@@ -71,3 +75,16 @@ $(document).ready(function() {
         });
     }
 });
+
+// refrech page
+
+// $(document).ready(function(){
+//     // Function to refresh the page
+//     function refreshPage() {
+//         location.reload(); // Reload the current page
+//     }
+
+//     // Set interval to refresh every 5 seconds (5000 milliseconds)
+//     setInterval(refreshPage, 5000); // Adjust the interval time as needed (in milliseconds)
+// });
+
